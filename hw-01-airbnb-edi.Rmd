@@ -134,7 +134,7 @@ Let's de-construct this code:
 
 4.  Use a single pipeline to identity the neighbourhoods with the top five median listing prices. Then, in another pipeline filter the data for these five neighbourhoods and make ridge plots of the distributions of listing prices in these five neighbourhoods. In a third pipeline calculate the minimum, mean, median, standard deviation, IQR, and maximum listing price in each of these neighbourhoods. Use the visualisation and the summary statistics to describe the distribution of listing prices in the neighbourhoods. (Your answer will include three pipelines, one of which ends in a visualisation, and a narrative.)
 
-```{r}
+```{r eval=TRUE}
 top5 <- edibnb %>%
   group_by(neighbourhood) %>%
   summarise(median_price = median(price, na.rm = TRUE)) %>%
@@ -144,12 +144,8 @@ top5 <- edibnb %>%
 
 ```{r eval=TRUE}
 library(ggridges)
-ggplot(top5, aes(x = median_price, y = neighbourhood, fill = neighbourhood)) +
-  geom_density_ridges(scale = 1.5) +
-  labs(title = "Distribution of Airbnb Prices in the Top 5 Neighborhoods",
-       x = "Price",
-       y = "Neighborhood") +
-  theme_minimal()
+ggplot(edibnb, aes(x = price, y = neighbourhood, fill = neighbourhood)) +
+  geom_density_ridges(alpha = 0.5) 
 ```
 
 ```{r}
@@ -172,10 +168,12 @@ print(summary_stats)
 
 ```{r}
 ggplot(data = edibnb, mapping = aes(x = review_scores_rating)) +
-  geom_histogram(binwidth = 100) +
+  geom_histogram(binwidth = 5) +
   facet_wrap(~ neighbourhood)
 ```
 
+Airbnb guests in Edinburgh typically rate properties in the 75-100 range.  In places like Leith, Old Town, Marchmont, and Haymarket, most guests rated properties 100.  Meanwhile in Old Town, most guests
+rated the properties in the 80-90 range.
 
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards and review the md document on GitHub to make sure you're happy with the final state of your work.*
 
